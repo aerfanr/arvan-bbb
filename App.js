@@ -1,19 +1,9 @@
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { Text } from 'react-native'
 
-const HomeScreen = () => {
-    return (
-        <Text> Home Screen </Text>
-    )
-}
-
-const SettingsScreen = () => {
-    return (
-        <Text> Settings Screen </Text>
-    )
-}
+import SettingsScreen from './code/settings-screen'
+import HomeScreen from './code/home-screen'
 
 const Tab = createBottomTabNavigator()
 
