@@ -43,7 +43,7 @@ const SettingsScreen = () => {
     return (
         <View style={styles.container}>
             <Text> Settings Screen </Text>
-            <Text> Arvan Server Name: </Text>
+            <Text> Arvan Server ID: </Text>
             <TextInput value={serverName}
                 onChangeText={text => setServerName(text)}
                 style={styles.input}
