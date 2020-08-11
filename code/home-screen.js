@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, Alert } from 'react-native'
+import { View, Text, Alert, Button } from 'react-native'
 import * as Keychain from 'react-native-keychain'
 import axios from 'axios'
 import sha1 from 'js-sha1'
@@ -61,6 +61,25 @@ const HomeScreen = () => {
         }
     }
 
+    const turnOn = async () => {
+        try {
+            const credentials = await Keychain.getGenericPassword({ service: 'arvan' })
+            if (credentials) {
+                axios.patch(`https://napi.arvancloud.com/iaas/v1/server/${credentials.username}/action`, { type: 'power-on' }, {
+                    headers: {
+                        Authorization: 'Apikey ' + credentials.password
+                    }
+                })
+                    .then(res => console.log(res))
+                    .catch(error => throwError('Arvan Error', error.message))
+            } else {
+                throwError('Arvan Error', 'No Arvan Credentials')
+            }
+        } catch (error) {
+            throwError('Arvan Error', JSON.stringify(error))
+        }
+    }
+
     const throwError = (errorType, errorText) => {
         Alert.alert(errorType, errorText, [{ text: 'OK' }])
     }
@@ -77,6 +96,7 @@ const HomeScreen = () => {
     return (
         <View style={styles.container}>
             <Text> {serverStatus} </Text>
+            {(serverStatus === 'SHUTOFF') ? <Button title='Turn On' onPress={turnOn} /> : <Button title='Turn Off' />}
             <Text> {meetings ? meetings + ' meeting(s) are running.' : 'There is not any meetings.'} </Text>
             <Text> {participants ? participants + ' participant(s) are online.' : 'There is no participant online.'} </Text>
         </View>
