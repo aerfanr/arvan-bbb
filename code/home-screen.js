@@ -80,6 +80,31 @@ const HomeScreen = () => {
         }
     }
 
+    const turnOff = async () => {
+        try {
+            const credentials = await Keychain.getGenericPassword({ service: 'arvan' })
+            if (credentials) {
+                if (participants === 0) {
+                    axios.patch(`https://napi.arvancloud.com/iaas/v1/server/${credentials.username}/action`, { type: 'power-off' }, {
+                        headers: {
+                            Authorization: 'Apikey ' + credentials.password
+                        }
+                    })
+                        .then(res => console.log(res))
+                        .catch(error => throwError('Arvan Error', error.message))
+                } else if (!participants) {
+                    throwError('BigBlueButton Error', 'Cannot recieve information from BigBlueButton.')
+                } else {
+                    throwError('Cannot Turn Off', `There are ${participants} participant(s) present in the server.`)
+                }
+            } else {
+                throwError('Arvan Error', 'No Arvan Credentials')
+            }
+        } catch (error) {
+            throwError('Arvan Error', JSON.stringify(error))
+        }
+    }
+
     const throwError = (errorType, errorText) => {
         Alert.alert(errorType, errorText, [{ text: 'OK' }])
     }
@@ -96,7 +121,7 @@ const HomeScreen = () => {
     return (
         <View style={styles.container}>
             <Text> {serverStatus} </Text>
-            {(serverStatus === 'SHUTOFF') ? <Button title='Turn On' onPress={turnOn} /> : <Button title='Turn Off' />}
+            {(serverStatus === 'SHUTOFF') ? <Button title='Turn On' onPress={turnOn} /> : <Button title='Turn Off' onPress={turnOff} />}
             <Text> {meetings ? meetings + ' meeting(s) are running.' : 'There is not any meetings.'} </Text>
             <Text> {participants ? participants + ' participant(s) are online.' : 'There is no participant online.'} </Text>
         </View>
