@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { ScrollView, RefreshControl, Text, Alert, Button } from 'react-native'
+import PropTypes from 'prop-types'
+import { ScrollView, RefreshControl, Text, Alert, Button, View, Image } from 'react-native'
 import * as Keychain from 'react-native-keychain'
 import axios from 'axios'
 import sha1 from 'js-sha1'
@@ -197,12 +198,21 @@ const HomeScreen = () => {
 
     return (
         <ScrollView style={styles.container} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh}/>}>
-            <Text> {serverStatus} </Text>
-            {(serverStatus === 'SHUTOFF') ? <Button title='Turn On' onPress={turnOn} /> : <Button title='Turn Off' onPress={turnOff} />}
-            <Text> {meetings ? meetings + ' meeting(s) are running.' : 'There is not any meetings.'} </Text>
-            <Text> {participants ? participants + ' participant(s) are online.' : 'There is no participant online.'} </Text>
-            <Text onPress={toggleLogView}> Status{displayLogs ? '▲' : '▼'} {lastLog} </Text>
-            {displayLogs ? <LogView logs={logs} /> : null}
+            <Image source={require('../assets/title-logo.png')} style={styles.logo}/>
+            <View style={styles.container} >
+                <Text style={styles.titleText}> Server Status </Text>
+                <Text style={styles.normalText}> Server is {serverStatus === 'ACTIVE' ? 'On' : 'Off'} </Text>
+                {(serverStatus === 'SHUTOFF') ? <Button title='Turn On' onPress={turnOn} color='#56d0d0'/> : <Button title='Turn Off' onPress={turnOff} />}
+            </View>
+            <View style={styles.container} >
+                <Text style={styles.titleText}> BigBlueButton Status </Text>
+                <Text style={styles.normalText}> {meetings ? meetings + ' meeting(s) are running.' : 'There is not any meetings.'} </Text>
+                <Text style={styles.normalText}> {participants ? participants + ' participant(s) are online.' : 'There is no participant online.'} </Text>
+            </View>
+            <View style={styles.container} >
+                <Text onPress={toggleLogView} style={styles.titleText}> Request Status {displayLogs ? '▲' : '▼'} </Text>
+                {displayLogs ? <LogView logs={logs} /> : <Text style={styles.normalText}>{lastLog}</Text>}
+            </View>
         </ScrollView>
     )
 }
@@ -210,5 +220,13 @@ const HomeScreen = () => {
 export default HomeScreen
 
 const LogView = ({ logs }) => {
-    return (logs.map((value, index) => <Text key={index}> {value} </Text>))
+    return (
+        <View style={styles.logContainer}>
+            {logs.map((value, index) => <Text key={index}> {value} </Text>)}
+        </View>
+    )
+}
+
+LogView.propTypes = {
+    logs: PropTypes.array
 }

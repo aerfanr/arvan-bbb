@@ -40,30 +40,43 @@ const SettingsScreen = () => {
         }
     }
 
+    const themes = [
+        {label: 'device settings', value: 0},
+        {label: 'dark', value: 1},
+        {label: 'light', value: 2}
+    ]
+
     return (
         <View style={styles.container}>
-            <Text> Settings Screen </Text>
-            <Text> Arvan Server ID: </Text>
-            <TextInput value={serverName}
-                onChangeText={text => setServerName(text)}
-                style={styles.input}
-            />
-            <Text> Arvan API Key: </Text>
-            <TextInput value={serverKey}
-                onChangeText={text => setServerKey(text)}
-                style={styles.input}
-            />
-            <Text> BigBlueButton Hostname: </Text>
-            <TextInput value={bbbName}
-                onChangeText={text => setBbbName(text)}
-                style={styles.input}
-            />
-            <Text> BigBlueButton API Key: </Text>
-            <TextInput value={bbbKey}
-                onChangeText={text => setBbbKey(text)}
-                style={styles.input}
-            />
-            <Button title="Submit" onPress={updateSettings}/>
+            <Text style={styles.titleText}> Application Settings </Text>
+            <View style={styles.container}>
+                <Text> Arvan Server ID: </Text>
+                <TextInput value={serverName}
+                    onChangeText={text => setServerName(text)}
+                    style={styles.input}
+                />
+                <Text> Arvan API Key: </Text>
+                <TextInput value={serverKey}
+                    onChangeText={text => setServerKey(text)}
+                    style={styles.input}
+                />
+            </View>
+            <View style={styles.container}>
+                <Text> BigBlueButton Hostname: </Text>
+                <TextInput value={bbbName}
+                    onChangeText={text => setBbbName(text)}
+                    style={styles.input}
+                />
+                <Text> BigBlueButton API Key: </Text>
+                <TextInput value={bbbKey}
+                    onChangeText={text => setBbbKey(text)}
+                    style={styles.input}
+                />
+            </View>
+            <View style={styles.container}>
+                <Text> Application Theme: </Text>
+            </View>
+            <Button title="Submit" onPress={updateSettings} color='#56d0d0'/>
         </View>
     )
 }

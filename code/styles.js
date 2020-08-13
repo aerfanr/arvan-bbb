@@ -9,7 +9,27 @@ const styles = StyleSheet.create({
         marginTop: 7.5
     },
     container: {
-        padding: 15
+        padding: 15,
+        margin: -7.5
+    },
+    normalText: {
+        fontSize: 18
+    },
+    titleText: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginBottom: 8
+    },
+    logContainer: {
+        backgroundColor: '#ececec',
+        borderRadius: 3,
+        padding: 3
+    },
+    logo: {
+        height: 75,
+        resizeMode: 'contain',
+        alignSelf: 'center'
     }
 })
 
