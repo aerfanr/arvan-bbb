@@ -154,7 +154,7 @@ android {
             storeFile file('arvan-bbb.keystore')
             storePassword System.console().readLine("\nKeystore password:")
             keyAlias 'arvan-bbb'
-            keyPassword System.console().readLine("\Alias password: ")
+            keyPassword System.console().readLine("\nAlias password: ")
         }
     }
     buildTypes {
