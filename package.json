@@ -1,7 +1,7 @@
 {
-  "name": "ArvanBBB",
-  "version": "0.0.1",
-  "private": true,
+  "name": "arvan-bbb",
+  "version": "0.1-beta",
+  "private": false,
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
