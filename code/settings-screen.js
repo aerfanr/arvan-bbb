@@ -40,12 +40,6 @@ const SettingsScreen = () => {
         }
     }
 
-    const themes = [
-        {label: 'device settings', value: 0},
-        {label: 'dark', value: 1},
-        {label: 'light', value: 2}
-    ]
-
     return (
         <View style={styles.container}>
             <Text style={styles.titleText}> Application Settings </Text>
@@ -72,9 +66,6 @@ const SettingsScreen = () => {
                     onChangeText={text => setBbbKey(text)}
                     style={styles.input}
                 />
-            </View>
-            <View style={styles.container}>
-                <Text> Application Theme: </Text>
             </View>
             <Button title="Submit" onPress={updateSettings} color='#56d0d0'/>
         </View>

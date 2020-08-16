@@ -46,7 +46,9 @@ const HomeScreen = () => {
     }
 
     const getBbbStatus = async () => {
-        if (serverStatus === 'ACTIVE') {
+        console.log('SHOTOR')
+        console.log(serverStatus)
+        if (serverStatus !== 'SHUTOFF') {
             try {
                 const credentials = await Keychain.getGenericPassword({ service: 'bbb' })
                 if (credentials) {
@@ -147,7 +149,6 @@ const HomeScreen = () => {
     }
 
     const log = (logType, logMessage) => {
-        console.log('gav: ', logMessage)
         switch (logType) {
         case (0) :
             setLastLog('🟢' + logMessage)
@@ -174,10 +175,6 @@ const HomeScreen = () => {
         setRefreshing(false)
     }
 
-    const silentRefresh = () => {
-        getServerStatus()
-        getBbbStatus()
-    }
     const [serverStatus, setServerStatus] = useState('')
     const [meetings, setMeetings] = useState(0)
     const [participants, setParticipants] = useState(null)
@@ -188,11 +185,10 @@ const HomeScreen = () => {
 
     useEffect(() => {
         refresh()
-        setInterval(silentRefresh, 30000)
+        setInterval(refresh, 30000)
     }, [])
 
     useEffect(() => {
-        console.log('boz: ', lastLog)
         setLogs([lastLog, ...logs])
     }, [lastLog])
 
@@ -201,8 +197,8 @@ const HomeScreen = () => {
             <Image source={require('../assets/title-logo.png')} style={styles.logo}/>
             <View style={styles.container} >
                 <Text style={styles.titleText}> Server Status </Text>
-                <Text style={styles.normalText}> Server is {serverStatus === 'ACTIVE' ? 'On' : 'Off'} </Text>
-                {(serverStatus === 'SHUTOFF') ? <Button title='Turn On' onPress={turnOn} color='#56d0d0'/> : <Button title='Turn Off' onPress={turnOff} />}
+                <Text style={styles.normalText}> Server is {serverStatus === 'ACTIVE' ? 'On' : 'Off or Unavailable'} </Text>
+                {(serverStatus === 'SHUTOFF') ? <Button disabled={refreshing} title='Turn On' onPress={turnOn} color='#56d0d0'/> : <Button disabled={refreshing} title='Turn Off' onPress={turnOff} color='#56d0d0'/>}
             </View>
             <View style={styles.container} >
                 <Text style={styles.titleText}> BigBlueButton Status </Text>
