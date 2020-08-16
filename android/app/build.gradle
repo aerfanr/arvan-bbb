@@ -133,7 +133,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "0.1-beta.2"
     }
     splits {
         abi {
@@ -152,9 +152,9 @@ android {
         }
         release {
             storeFile file('arvan-bbb.keystore')
-            storePassword System.console().readLine("\nKeystore password:")
+            storePassword 'PASSWORD'
             keyAlias 'arvan-bbb'
-            keyPassword System.console().readLine("\nAlias password: ")
+            keyPassword 'PASSWORD'
         }
     }
     buildTypes {
