@@ -10,7 +10,6 @@ import styles from './styles'
 
 const HomeScreen = () => {
     const getServerStatus = async () => {
-        console.log('GAVMISH')
         try {
             const credentials = await Keychain.getGenericPassword({ service: 'arvan' })
             if (credentials) {
@@ -46,8 +45,6 @@ const HomeScreen = () => {
     }
 
     const getBbbStatus = async () => {
-        console.log('SHOTOR')
-        console.log(serverStatus)
         if (serverStatus !== 'SHUTOFF') {
             try {
                 const credentials = await Keychain.getGenericPassword({ service: 'bbb' })
@@ -73,7 +70,7 @@ const HomeScreen = () => {
                         })
                         .catch(error => {
                             log(1, error.message)
-                            log(1, 'Arvan Error:')
+                            log(1, 'BigBlueButton Error:')
                         })
                 } else {
                     log(1, 'No BigBlueButton credentials')
@@ -149,19 +146,7 @@ const HomeScreen = () => {
     }
 
     const log = (logType, logMessage) => {
-        switch (logType) {
-        case (0) :
-            setLastLog('🟢' + logMessage)
-            break
-        case (1) :
-            setLastLog('🔴' + logMessage)
-            break
-        case (2) :
-            setLastLog('🟡' + logMessage)
-            break
-        default:
-            setLastLog('🟡' + logMessage)
-        }
+        setLastLog({ logType: logType, logMessage: logMessage })
     }
 
     const toggleLogView = () => {
@@ -189,7 +174,9 @@ const HomeScreen = () => {
     }, [])
 
     useEffect(() => {
-        setLogs([lastLog, ...logs])
+        if (lastLog) {
+            setLogs([lastLog, ...logs])
+        }
     }, [lastLog])
 
     return (
@@ -198,7 +185,8 @@ const HomeScreen = () => {
             <View style={styles.container} >
                 <Text style={styles.titleText}> Server Status </Text>
                 <Text style={styles.normalText}> Server is {serverStatus === 'ACTIVE' ? 'On' : 'Off or Unavailable'} </Text>
-                {(serverStatus === 'SHUTOFF') ? <Button disabled={refreshing} title='Turn On' onPress={turnOn} color='#56d0d0'/> : <Button disabled={refreshing} title='Turn Off' onPress={turnOff} color='#56d0d0'/>}
+                {(serverStatus === 'SHUTOFF') ? <Button disabled={refreshing} title='Turn On' onPress={turnOn} color='#56d0d0'/>
+                    : <Button disabled={refreshing} title='Turn Off' onPress={turnOff} color='#56d0d0'/>}
             </View>
             <View style={styles.container} >
                 <Text style={styles.titleText}> BigBlueButton Status </Text>
@@ -207,7 +195,7 @@ const HomeScreen = () => {
             </View>
             <View style={styles.container} >
                 <Text onPress={toggleLogView} style={styles.titleText}> Request Status {displayLogs ? '▲' : '▼'} </Text>
-                {displayLogs ? <LogView logs={logs} /> : <Text style={styles.normalText}>{lastLog}</Text>}
+                {displayLogs ? <LogView logs={logs} /> : <Text style={styles.normalText}>{lastLog ? lastLog.logMessage : ''}</Text>}
             </View>
         </ScrollView>
     )
@@ -216,9 +204,15 @@ const HomeScreen = () => {
 export default HomeScreen
 
 const LogView = ({ logs }) => {
+    const styleList = [
+        styles.success,
+        styles.error,
+        styles.info
+    ]
+
     return (
         <View style={styles.logContainer}>
-            {logs.map((value, index) => <Text key={index}> {value} </Text>)}
+            {logs.map((value, index) => <Text key={index} style={styleList[value.logType]}> {value.logMessage} </Text>)}
         </View>
     )
 }

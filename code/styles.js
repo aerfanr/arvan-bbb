@@ -30,6 +30,15 @@ const styles = StyleSheet.create({
         height: 75,
         resizeMode: 'contain',
         alignSelf: 'center'
+    },
+    error: {
+        color: '#ed254e'
+    },
+    success: {
+        color: '#00c2be'
+    },
+    info: {
+        color: '#f9dc5c'
     }
 })
 
